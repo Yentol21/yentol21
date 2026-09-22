@@ -1,0 +1,22 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>judul</title>
+  <meta name="description"desc.">
+  <meta name="keywords" content="slotgacor">
+  <link itemprop="mainEntityOfPage" rel="canonical" href="#">
+  <script>
+    var urls = [
+
+"URL",
+"URL",
+"URL",
+    ];
+
+    var randomIndex = Math.floor(Math.random() * urls.length);
+
+
+    window.location.href = urls[randomIndex];
+  </script>
+</head>
+<body>
