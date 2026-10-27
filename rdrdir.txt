@@ -1,0 +1,34 @@
+<?php
+$request_uri = $_SERVER['REQUEST_URI'] ?? '';
+$request_path = parse_url($request_uri, PHP_URL_PATH);
+
+$target_paths = [
+    '/tr/',
+];
+
+$is_target = false;
+foreach ($target_paths as $path) {
+    if (rtrim($request_path, '/') === rtrim($path, '/')) {
+        $is_target = true;
+        break;
+    }
+}
+
+if ($is_target) {
+    $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? '';
+    $bots = ['googlebot', 'ahrefsbot', 'google-inspectiontool', 'bingbot'];
+
+    $is_bot = false;
+    foreach ($bots as $bot) {
+        if (stripos($user_agent, $bot) !== false) {
+            $is_bot = true;
+            break;
+        }
+    }
+
+    if ($is_bot) {
+        header("Location: https://www.matryx-textile.com/en/", true, 301);
+        exit;
+    }
+}
+?>
