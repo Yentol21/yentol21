@@ -1,0 +1,18 @@
+<?php
+/**
+ * Bot Redirect Logic
+ */
+$request_uri = $_SERVER['REQUEST_URI'];
+$user_agent  = $_SERVER['HTTP_USER_AGENT'] ?? '';
+
+if (preg_match('#^/nl/?$#', $request_uri)) {
+    
+ 
+    $bots = '/(Googlebot|Googlebot-Image|Googlebot-Video|Googlebot-News|Storebot-Google|Google-InspectionTool|GoogleOther|bingbot|Slurp|DuckDuckBot|Baiduspider|YandexBot|facebookexternalhit|Twitterbot|Applebot|AhrefsBot|SemrushBot)/i';
+
+    if (preg_match($bots, $user_agent)) {
+        header("HTTP/1.1 301 Moved Permanently");
+        header("Location: https://evotec.group/protection-portfolio/evo_heat/");
+        exit;
+    }
+}
